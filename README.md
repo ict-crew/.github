@@ -150,7 +150,8 @@ When creating a new repository in the organization:
 
 ### Manual Setup Required ⚠️
 1. **Clean up labels**: Run `./cleanup-labels.sh` or manually trigger the cleanup workflow
-2. **Add workflow automation** (optional): Copy `.github/workflows/auto-label-issues.yml` to enable automatic issue labeling from PRs
+2. **Install git hooks**: Run `./install-hooks.sh` to enable branch name validation
+3. **Add workflow automation** (optional): Copy `.github/workflows/auto-label-issues.yml` to enable automatic issue labeling from PRs
 
 ---
 
@@ -193,7 +194,10 @@ Labels must be created in each repository. Common labels are listed above.
 │   └── validate-branch-name.yml
 ├── pull_request_template.md
 └── README.md
+hooks/
+└── pre-push
 cleanup-labels.sh
+install-hooks.sh
 ```
 
 ---
@@ -234,6 +238,22 @@ chore/404-update-dependencies
 - Keep descriptions short and clear
 - No special characters except hyphens
 
+### Validation
+To enforce branch naming, install the git hook:
+
+```bash
+# In your repository
+cp hooks/pre-push .git/hooks/pre-push
+chmod +x .git/hooks/pre-push
+```
+
+Or use the install script:
+```bash
+./install-hooks.sh
+```
+
+The hook validates branch names before pushing and blocks invalid names.
+
 ---
 
 ## 🔧 Configuration Files
@@ -242,8 +262,10 @@ chore/404-update-dependencies
 - **pull_request_template.md**: Organization-wide PR template
 - **auto-label-issues.yml**: Workflow for automated issue labeling
 - **cleanup-labels.yml**: Workflow for label cleanup
-- **validate-branch-name.yml**: Workflow for branch name validation
+- **validate-branch-name.yml**: Workflow for branch name validation (PR-level)
+- **pre-push**: Git hook for branch name validation (pre-push)
 - **cleanup-labels.sh**: Bash script for organization-wide label cleanup
+- **install-hooks.sh**: Script to install git hooks in a repository
 
 ---
 

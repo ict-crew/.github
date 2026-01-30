@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Branch name validation hook
+# Validates branch names before pushing
+
+BRANCH_PATTERN="^(feature|bugfix|hotfix|docs|refactor|test|chore)\/[0-9]+-[a-z0-9-]+$|^(main|master|develop)$"
+
+# Get the current branch name
+BRANCH=$(git symbolic-ref HEAD 2>/dev/null | sed 's/refs\/heads\///')
+
+# Skip validation for protected branches
+if [[ "$BRANCH" =~ ^(main|master|develop)$ ]]; then
+    exit 0
+fi
+
+# Validate branch name
+if [[ ! $BRANCH =~ $BRANCH_PATTERN ]]; then
+    echo "❌ ERROR: Invalid branch name: '$BRANCH'"
+    echo ""
+    echo "Branch name must follow the pattern:"
+    echo "  <type>/<issue-number>-<description>"
+    echo ""
+    echo "Valid types: feature, bugfix, hotfix, docs, refactor, test, chore"
+    echo ""
+    echo "Examples:"
+    echo "  feature/123-add-user-auth"
+    echo "  bugfix/456-fix-login-error"
+    echo "  hotfix/789-critical-patch"
+    echo ""
+    echo "Rules:"
+    echo "  • Lowercase only"
+    echo "  • Use hyphens (-) between words"
+    echo "  • Include issue number"
+    echo "  • No special characters except hyphens"
+    echo ""
+    echo "Rename your branch:"
+    echo "  git branch -m $BRANCH <new-branch-name>"
+    echo ""
+    exit 1
+fi
+
+exit 0
