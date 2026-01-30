@@ -1,0 +1,40 @@
+name: Validate Branch Name
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  validate-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch name
+        run: |
+          BRANCH="${{ github.head_ref }}"
+          PATTERN="^(feature|bugfix|hotfix|docs|refactor|test|chore)\/[0-9]+-[a-z0-9-]+$"
+          
+          echo "Branch name: $BRANCH"
+          
+          if [[ $BRANCH =~ $PATTERN ]]; then
+            echo "✓ Branch name is valid"
+            exit 0
+          else
+            echo "✗ Invalid branch name"
+            echo ""
+            echo "Branch name must follow the pattern:"
+            echo "<type>/<issue-number>-<description>"
+            echo ""
+            echo "Valid types: feature, bugfix, hotfix, docs, refactor, test, chore"
+            echo ""
+            echo "Examples:"
+            echo "  feature/123-add-user-auth"
+            echo "  bugfix/456-fix-login-error"
+            echo "  hotfix/789-critical-patch"
+            echo ""
+            echo "Rules:"
+            echo "  - Lowercase only"
+            echo "  - Use hyphens (-) between words"
+            echo "  - Include issue number"
+            echo "  - No special characters"
+            exit 1
+          fi

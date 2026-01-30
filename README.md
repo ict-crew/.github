@@ -114,6 +114,14 @@ All repositories use these standard labels:
 
 **Note**: This workflow is for single-repo cleanup. For organization-wide cleanup, use the script below.
 
+### 3. Validate Branch Name
+**Trigger**: When a PR is opened or updated  
+**What it does**: Validates branch name follows naming convention
+
+**Location**: `.github/workflows/validate-branch-name.yml`
+
+**Note**: This workflow must be copied to each repository where you want branch name validation.
+
 ---
 
 ## 🛠️ Maintenance Scripts
@@ -181,11 +189,50 @@ Labels must be created in each repository. Common labels are listed above.
 │   └── config.yml
 ├── workflows/
 │   ├── auto-label-issues.yml
-│   └── cleanup-labels.yml
+│   ├── cleanup-labels.yml
+│   └── validate-branch-name.yml
 ├── pull_request_template.md
 └── README.md
 cleanup-labels.sh
 ```
+
+---
+
+## 🌿 Branch Naming Convention
+
+Follow this standard format for all branches:
+
+### Format
+```
+<type>/<issue-number>-<short-description>
+```
+
+### Types
+- `feature/` - New features
+- `bugfix/` - Bug fixes
+- `hotfix/` - Urgent production fixes
+- `docs/` - Documentation updates
+- `refactor/` - Code refactoring
+- `test/` - Test additions or updates
+- `chore/` - Maintenance tasks
+
+### Examples
+```
+feature/123-add-user-authentication
+bugfix/456-fix-login-error
+hotfix/789-critical-security-patch
+docs/101-update-api-docs
+refactor/202-optimize-database-queries
+test/303-add-unit-tests
+chore/404-update-dependencies
+```
+
+### Rules
+- Use lowercase only
+- Separate words with hyphens (-)
+- Include issue number when applicable
+- Keep descriptions short and clear
+- No special characters except hyphens
 
 ---
 
@@ -195,6 +242,7 @@ cleanup-labels.sh
 - **pull_request_template.md**: Organization-wide PR template
 - **auto-label-issues.yml**: Workflow for automated issue labeling
 - **cleanup-labels.yml**: Workflow for label cleanup
+- **validate-branch-name.yml**: Workflow for branch name validation
 - **cleanup-labels.sh**: Bash script for organization-wide label cleanup
 
 ---
