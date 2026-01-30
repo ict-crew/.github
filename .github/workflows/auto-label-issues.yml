@@ -1,0 +1,71 @@
+name: Auto Label Issues from PR
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  label-issues:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parse PR and apply labels to issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prBody = context.payload.pull_request.body || '';
+            
+            // Extract issue numbers from "Closes #123" or "Fixes #456" patterns
+            const issueNumbers = [];
+            const issueRegex = /(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+#(\d+)/gi;
+            let match;
+            while ((match = issueRegex.exec(prBody)) !== null) {
+              issueNumbers.push(parseInt(match[1]));
+            }
+            
+            if (issueNumbers.length === 0) {
+              console.log('No linked issues found');
+              return;
+            }
+            
+            // Map checkbox labels to actual label names
+            const labelMap = {
+              'Fixed': 'Fixed',
+              'Need to Discuss': 'Need to Discuss',
+              'Hold': 'Hold',
+              'To Be Tested': 'To Be Tested',
+              'High Priority': 'High Priority',
+              'Work In Progress': 'Work In Progress'
+            };
+            
+            // Find checked labels in PR body
+            const labelsToAdd = [];
+            for (const [checkboxText, labelName] of Object.entries(labelMap)) {
+              const regex = new RegExp(`- \\[x\\]\\s+${checkboxText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i');
+              if (regex.test(prBody)) {
+                labelsToAdd.push(labelName);
+              }
+            }
+            
+            if (labelsToAdd.length === 0) {
+              console.log('No labels checked in PR');
+              return;
+            }
+            
+            console.log(`Found issues: ${issueNumbers.join(', ')}`);
+            console.log(`Labels to add: ${labelsToAdd.join(', ')}`);
+            
+            // Apply labels to each issue
+            for (const issueNumber of issueNumbers) {
+              try {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  labels: labelsToAdd
+                });
+                console.log(`✓ Added labels to issue #${issueNumber}`);
+              } catch (error) {
+                console.log(`✗ Failed to add labels to issue #${issueNumber}: ${error.message}`);
+              }
+            }
