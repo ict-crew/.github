@@ -1,0 +1,26 @@
+name: Documentation Issue
+description: Report missing or incorrect documentation
+title: "[Docs]: "
+labels: ["documentation"]
+body:
+  - type: input
+    attributes:
+      label: Documentation URL
+      description: Link to the documentation page (if applicable)
+      placeholder: "https://..."
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Issue Description
+      description: What's wrong or missing in the documentation?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Suggested Fix
+      description: How should the documentation be improved?
+    validations:
+      required: false
