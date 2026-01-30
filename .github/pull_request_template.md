@@ -28,7 +28,18 @@
 - [ ] No new warnings generated
 
 ## Related Issues
-<!-- Link related issues: Closes #123, Fixes #456 -->
+<!-- Use closing keywords to automatically close issues when this PR is merged -->
+<!-- Keywords: Closes, Fixes, Resolves (e.g., "Closes #123", "Fixes #456") -->
+<!-- Multiple issues: "Closes #123, Closes #456" or "Fixes #123 and #456" -->
+
+## Labels to Add
+<!-- Check labels that should be added to related issues after merge -->
+- [ ] Fixed
+- [ ] Need to Discuss
+- [ ] Hold
+- [ ] To Be Tested
+- [ ] High Priority
+- [ ] Work In Progress
 
 ## Screenshots (if applicable)
 <!-- Add screenshots here -->
