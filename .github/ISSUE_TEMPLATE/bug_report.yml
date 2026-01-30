@@ -24,3 +24,11 @@ body:
     attributes:
       label: Environment
       placeholder: "OS, browser, app version"
+
+  - type: input
+    attributes:
+      label: Version
+      description: Version number where the bug occurred
+      placeholder: "e.g., v1.0.0"
+    validations:
+      required: true
