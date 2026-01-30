@@ -32,5 +32,11 @@
 <!-- Keywords: Closes, Fixes, Resolves (e.g., "Closes #123", "Fixes #456") -->
 <!-- Multiple issues: "Closes #123, Closes #456" or "Fixes #123 and #456" -->
 
+## Labels
+<!-- Add relevant labels to this PR: -->
+<!-- Status: Fixed, Need to Discuss, Hold, To Be Tested, Work In Progress -->
+<!-- Priority: High Priority -->
+<!-- Type: bug, enhancement, documentation, question -->
+
 ## Screenshots (if applicable)
 <!-- Add screenshots here -->
